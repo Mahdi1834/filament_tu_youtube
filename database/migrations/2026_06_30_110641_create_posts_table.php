@@ -15,13 +15,13 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->text('slug');
-            $table->integer("category_id");
+            $table->integer('category_id');
             $table->string('image');
             $table->string('color');
             $table->string('body');
-            $table->json('tag');
-            $table->boolean("published")->default(false);
-            $table->boolean("published_at");
+            $table->json('tags');
+            $table->boolean('published')->default(false);
+            $table->dateTime('published_at');
             $table->timestamps();
         });
     }

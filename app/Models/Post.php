@@ -10,12 +10,26 @@ class Post extends Model
     protected $fillable = [
         'title',
         'slug',
-        'slug',
-        'slug',
-        'slug',
-        'slug',
-        'slug',
-        'slug',
-
+        'category_id',
+        'image',
+        'color',
+        'body',
+        'tags',
+        'published',
+        'published_at',
     ];
+
+
+    protected $casts = [
+        'tags' => 'array',
+        'published' => 'boolean',
+        'published_at' => 'datetime',
+    ];
+
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
 }

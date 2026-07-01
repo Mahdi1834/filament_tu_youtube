@@ -1,0 +1,92 @@
+<?php
+
+namespace App\Filament\Resources\Posts\Schemas;
+
+use App\Models\Category;
+use Filament\Forms\Components\Checkbox;
+use Filament\Forms\Components\ColorPicker;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\MarkdownEditor;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TagsInput;
+use Filament\Forms\Components\TextInput;
+use Filament\Schemas\Components\Group;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
+
+class PostForm
+{
+    public static function configure(Schema $schema): Schema
+    {
+        return $schema
+            ->components([
+                Section::make('Post Details')
+                    ->description('Enter the details of the post.')
+                    ->icon(Heroicon::RectangleStack)
+                    ->schema([
+
+                        Section::make()->schema([
+
+                            TextInput::make('title')
+                                ->label('Title')
+                                ->required()
+                                ->rules(['min:3'])
+                                ->maxLength(255),
+                            TextInput::make('slug')
+                                ->label('Slug')
+                                ->required()
+                                ->unique()->validationMessages(
+                                    [
+                                       "unique" => "از این اسلاگ قبلا استفاده شده است. لطفا یک اسلاگ دیگر انتخاب کنید.",
+                                    ]
+                                )
+                                ->maxLength(255),
+                            Select::make('category_id')
+                                ->label('Category')
+                                ->required()
+                                ->options(Category::pluck('name', 'id')),
+                            ColorPicker::make('color')
+                                ->label('Color')
+                                ->required(),
+
+
+                        ])->columns(2),
+
+                        MarkdownEditor::make('body')
+                            ->label('Body')
+                            ->required(),
+
+                    ])->columnSpan(2),
+                Group::make()
+                    ->schema([
+
+                        Section::make('Image Upload')
+                            ->schema([
+                                FileUpload::make('image')
+                                    ->label('Image')
+                                    ->disk('public')
+                                    ->directory('posts')
+                                    ->required(),
+
+                            ]),
+                        Section::make('Meta')
+                            ->schema([
+                                TagsInput::make('tags')
+                                ->label('Tags')
+                                ->required(),
+                                Checkbox::make('published')
+                                    ->label('Published')
+                                    ->default(false),
+                                DatePicker::make('published_at')
+                                    ->label('Published At')
+                                    ->nullable(),
+
+                            ]),
+                    ])->columnSpan(1),
+
+            ])
+            ->columns(3);
+    }
+}
