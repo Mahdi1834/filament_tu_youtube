@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources\Posts\Schemas;
 
-use App\Models\Category;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\ColorPicker;
 use Filament\Forms\Components\DatePicker;
@@ -39,18 +38,18 @@ class PostForm
                                 ->required()
                                 ->unique()->validationMessages(
                                     [
-                                       "unique" => "از این اسلاگ قبلا استفاده شده است. لطفا یک اسلاگ دیگر انتخاب کنید.",
+                                        'unique' => 'از این اسلاگ قبلا استفاده شده است. لطفا یک اسلاگ دیگر انتخاب کنید.',
                                     ]
                                 )
                                 ->maxLength(255),
                             Select::make('category_id')
                                 ->label('Category')
                                 ->required()
-                                ->options(Category::pluck('name', 'id')),
+                                ->relationship('category', 'name')
+                                ->searchable(),
                             ColorPicker::make('color')
                                 ->label('Color')
                                 ->required(),
-
 
                         ])->columns(2),
 
@@ -74,8 +73,8 @@ class PostForm
                         Section::make('Meta')
                             ->schema([
                                 TagsInput::make('tags')
-                                ->label('Tags')
-                                ->required(),
+                                    ->label('Tags')
+                                    ->required(),
                                 Checkbox::make('published')
                                     ->label('Published')
                                     ->default(false),
