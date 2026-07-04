@@ -17,7 +17,7 @@ use UnitEnum;
 
 class UserResource extends Resource
 {
-    protected static string|UnitEnum|null $navigationGroup = 'Shop';
+    // protected static string|UnitEnum|null $navigationGroup = 'Shop';
 
     protected static ?int $navigationSort = 2;
 

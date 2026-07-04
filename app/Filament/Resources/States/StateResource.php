@@ -13,6 +13,7 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use UnitEnum;
 
 class StateResource extends Resource
 {
@@ -22,6 +23,9 @@ class StateResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'name';
 
+    protected static string|UnitEnum|null $navigationGroup = 'Location';
+
+   protected static ?int $navigationSort = 2;
     public static function form(Schema $schema): Schema
     {
         return StateForm::configure($schema);

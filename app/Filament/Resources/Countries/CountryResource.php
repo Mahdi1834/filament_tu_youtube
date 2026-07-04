@@ -13,6 +13,8 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Override;
+use UnitEnum;
 
 class CountryResource extends Resource
 {
@@ -21,7 +23,21 @@ class CountryResource extends Resource
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
     protected static ?string $recordTitleAttribute = 'name';
+  protected static string|UnitEnum|null $navigationGroup = 'Location';
+   protected static ?int $navigationSort = 3;
+   protected static ?string $modelLabel="Manage Country" ;
 
+   #[Override]
+   public static function getNavigationBadge(): ?string
+   {
+    return Country::count();
+   }
+
+#[Override]
+	public static function getNavigationBadgeColor(): string|array|null
+    {
+        return "success";
+    }
     public static function form(Schema $schema): Schema
     {
         return CountryForm::configure($schema);
