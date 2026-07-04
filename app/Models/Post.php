@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Post extends Model
 {
-
     protected $fillable = [
         'title',
         'slug',
@@ -14,22 +13,23 @@ class Post extends Model
         'image',
         'color',
         'body',
-        'tags',
         'published',
         'published_at',
     ];
 
-
     protected $casts = [
-        'tags' => 'array',
+
         'published' => 'boolean',
         'published_at' => 'datetime',
     ];
-
 
     public function category()
     {
         return $this->belongsTo(Category::class);
     }
 
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class, 'post_tag');
+    }
 }

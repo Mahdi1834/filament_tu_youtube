@@ -12,17 +12,29 @@ use App\Filament\Resources\Products\Tables\ProductsTable;
 use App\Models\Product;
 use BackedEnum;
 use Filament\Resources\Resource;
+
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+
+use UnitEnum;
 
 class ProductResource extends Resource
 {
     protected static ?string $model = Product::class;
 
+    protected static string|UnitEnum|null $navigationGroup = 'Shop';
+
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
     protected static ?string $recordTitleAttribute = 'name';
+
+    protected static ?string $pluralModelLabel = 'محصولات';
+
+    protected static ?string $modelLabel = 'محصول';
+
+    protected static ?int $navigationSort = 1;
+    // protected static ?string $navigationLabel = 'Mis Clientes';
 
     public static function form(Schema $schema): Schema
     {
@@ -55,4 +67,6 @@ class ProductResource extends Resource
             'edit' => EditProduct::route('/{record}/edit'),
         ];
     }
+
+
 }

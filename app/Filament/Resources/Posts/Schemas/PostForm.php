@@ -72,8 +72,10 @@ class PostForm
                             ]),
                         Section::make('Meta')
                             ->schema([
-                                TagsInput::make('tags')
+                                Select::make('tags')
                                     ->label('Tags')
+                                    ->relationship("tags" , "name")
+                                    ->multiple()
                                     ->required(),
                                 Checkbox::make('published')
                                     ->label('Published')
