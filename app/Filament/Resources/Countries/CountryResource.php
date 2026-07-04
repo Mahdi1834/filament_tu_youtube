@@ -23,21 +23,25 @@ class CountryResource extends Resource
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
     protected static ?string $recordTitleAttribute = 'name';
-  protected static string|UnitEnum|null $navigationGroup = 'Location';
-   protected static ?int $navigationSort = 3;
-   protected static ?string $modelLabel="Manage Country" ;
 
-   #[Override]
-   public static function getNavigationBadge(): ?string
-   {
-    return Country::count();
-   }
+    protected static string|UnitEnum|null $navigationGroup = 'Location';
 
-#[Override]
-	public static function getNavigationBadgeColor(): string|array|null
+    protected static ?int $navigationSort = 3;
+
+    protected static ?string $modelLabel = 'Manage Country';
+
+    #[Override]
+    public static function getNavigationBadge(): ?string
     {
-        return "success";
+        return Country::count();
     }
+
+    #[Override]
+    public static function getNavigationBadgeColor(): string|array|null
+    {
+        return 'success';
+    }
+
     public static function form(Schema $schema): Schema
     {
         return CountryForm::configure($schema);
