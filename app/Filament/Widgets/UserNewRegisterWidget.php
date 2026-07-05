@@ -27,7 +27,7 @@ class UserNewRegisterWidget extends TableWidget
             TextColumn::make("id"),
             TextColumn::make("name"),
             TextColumn::make("email"),
-            TextColumn::make("created_ad"),
+            TextColumn::make("created_at"),
             ])
             ->filters([
                 //
