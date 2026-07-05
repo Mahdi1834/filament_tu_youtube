@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
 class CheckRole
@@ -15,9 +16,22 @@ class CheckRole
      */
     public function handle(Request $request, Closure $next, string $role): Response
     {
-        if (auth()->check() && auth()->user()->type !== $role) {
-            abort(403, "You are  not allowed to access panel");
+        if (!Auth::check()) {
+            return $next($request);
         }
+
+        $roleRedirects = [
+            'admin' => '/admin',
+            'manager' => '/manager',
+            'user' => '/user',
+        ];
+
+        $userRole = Auth::user()->type;
+
+        if (isset($roleRedirects[$userRole]) && $userRole !== $role) {
+            return redirect($roleRedirects[$userRole]);
+        }
+
         return $next($request);
     }
 }
