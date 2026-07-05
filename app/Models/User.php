@@ -25,6 +25,7 @@ class User extends Authenticatable
         'country_id',
         'city_id',
         'state_id',
+        'type'
     ];
 
     /**
@@ -63,5 +64,18 @@ class User extends Authenticatable
     public function country()
     {
         return $this->belongsTo(Country::class);
+    }
+
+    public function isAdmin()
+    {
+        return $this->type === "admin";
+    }
+    public function isManager()
+    {
+        return $this->type === "manager";
+    }
+    public function isUser()
+    {
+        return $this->type === "user";
     }
 }
