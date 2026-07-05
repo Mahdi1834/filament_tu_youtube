@@ -3,19 +3,31 @@
 namespace App\Filament\Widgets;
 
 use App\Models\Post;
-use App\Models\Product;
 use App\Models\User;
-use Filament\Support\Enums\IconPosition;
+use App\Models\Product;
 use Filament\Support\Icons\Heroicon;
+use Filament\Support\Enums\IconPosition;
 use Filament\Widgets\StatsOverviewWidget;
+use Illuminate\Database\Eloquent\Builder;
 use Filament\Widgets\StatsOverviewWidget\Stat;
+use Filament\Widgets\Concerns\InteractsWithPageFilters;
 
 class TestStateWidget extends StatsOverviewWidget
 {
+     use InteractsWithPageFilters;
+
+
     protected function getStats(): array
     {
+        $startDate = $this->pageFilters['startDate'] ?? null;
+        $endDate = $this->pageFilters['endDate'] ?? null;
+
+
         return [
-            Stat::make('Total Users', User::count())
+            Stat::make('Total Users', User::query()
+                    ->when($startDate, fn (Builder $query) => $query->whereDate('created_at', '>=', $startDate))
+                    ->when($endDate, fn (Builder $query) => $query->whereDate('created_at', '<=', $endDate))
+                    ->count())
                 ->description('Total number of user of this page')
                 ->descriptionIcon(Heroicon::User, IconPosition::Before)
                 ->chart(
