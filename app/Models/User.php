@@ -3,19 +3,26 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\City;
+use App\Models\Country;
 use Database\Factories\UserFactory;
-use Illuminate\Notifications\Notifiable;
-
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Filament\Auth\MultiFactor\App\Contracts\HasAppAuthentication;
+use Filament\Auth\MultiFactor\App\Contracts\HasAppAuthenticationRecovery;
+use Filament\Auth\MultiFactor\Email\Contracts\HasEmailAuthentication;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use NunoMaduro\Collision\Adapters\Phpunit\State;
 
 // class User extends Authenticatable implements FilamentUser
-class User extends Authenticatable
+class User extends Authenticatable implements HasAppAuthentication , HasEmailAuthentication
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
+
 
     /**
      * The attributes that are mass assignable.
@@ -29,7 +36,9 @@ class User extends Authenticatable
         'country_id',
         'city_id',
         'state_id',
-        'type'
+        'type',
+        'app_authentication_secret',
+        'has_email_authentication',
     ];
 
     /**
@@ -40,6 +49,7 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+
     ];
 
     /**
@@ -52,6 +62,8 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'app_authentication_secret' => 'encrypted',
+            'has_email_authentication' => 'boolean'
         ];
     }
 
@@ -92,4 +104,31 @@ class User extends Authenticatable
     //         default => false,
     //     };
     // }
+
+
+    public function getAppAuthenticationSecret(): ?string
+    {
+        return $this->app_authentication_secret;
+    }
+
+    public function saveAppAuthenticationSecret(?string $secret): void
+    {
+        $this->app_authentication_secret = $secret;
+        $this->save();
+    }
+
+
+    public function getAppAuthenticationHolderName(): string
+    {
+        return $this->email;
+    }
+
+    public function hasEmailAuthentication(): bool
+    {
+        return ! is_null($this->email_authenticated_at);
+    }
+    public function toggleEmailAuthentication(bool $condition): void
+    {
+        $this->forceFill(['email_authenticated_at' => $condition ? now() : null,])->save();
+    }
 }
