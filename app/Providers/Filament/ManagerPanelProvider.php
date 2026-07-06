@@ -55,6 +55,7 @@ class ManagerPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ])
+                ->databaseNotifications()
             ->topNavigation();
     }
 }

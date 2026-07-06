@@ -13,7 +13,7 @@ class UserObserver
      */
     public function created(User $user): void
     {
-        $recipient = User::where("type" , "admin")->first();
+        $recipient = User::where("type" , "admin")->orwhere('type' , 'manager')->get();
         Notification::make()
             ->title("User created")
             ->body("user created succeddfully")
