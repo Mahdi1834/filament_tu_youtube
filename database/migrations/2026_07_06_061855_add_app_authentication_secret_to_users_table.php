@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            // $table->text('app_authentication_secret')->nullable();
-            // $table->timestamp('email_authenticated_at')->nullable()///;
+            $table->text('app_authentication_secret')->nullable();
+            $table->timestamp('email_authenticated_at')->nullable();
             $table->boolean('has_email_authentication')->default(false);
         });
     }
