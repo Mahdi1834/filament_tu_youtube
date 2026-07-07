@@ -17,11 +17,13 @@ class UsersTable
     {
         return $table
             ->columns([
+                TextColumn::make('id'),
                 TextColumn::make('name'),
                 TextColumn::make('email'),
                 TextColumn::make('city.name'),
                 TextColumn::make('state.name'),
                 TextColumn::make('country.name'),
+                TextColumn::make('created_at'),
             ])
             ->filters([
                 //

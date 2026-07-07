@@ -3,7 +3,6 @@
 namespace App\Observers;
 
 use App\Models\User;
-use Filament\Actions\Action;
 use Filament\Notifications\Notification;
 
 class UserObserver
@@ -13,12 +12,12 @@ class UserObserver
      */
     public function created(User $user): void
     {
-        $recipient = User::where("type" , "admin")->orwhere('type' , 'manager')->get();
+        $recipient = User::where('type', 'admin')->orwhere('type', 'manager')->get();
         Notification::make()
-            ->title("User created")
-            ->body("user created succeddfully")
+            ->title('User created')
+            ->body('user created succeddfully')
             ->broadcast($recipient)
-        ->sendToDatabase($recipient);
+            ->sendToDatabase($recipient);
     }
 
     /**

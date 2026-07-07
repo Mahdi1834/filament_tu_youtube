@@ -12,8 +12,11 @@ use Filament\Forms\Components\TagsInput;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Group;
 use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
+use Illuminate\Support\Str;
+
 
 class PostForm
 {
@@ -32,7 +35,12 @@ class PostForm
                                 ->label('Title')
                                 ->required()
                                 ->rules(['min:3'])
-                                ->maxLength(255),
+                                ->maxLength(255)
+                                ->live(onBlur:true)
+                                ->afterStateUpdated(function(string $operation ,string $state , Set $set ){
+
+                                    $set("slug", Str::slug($state));
+                                }),
                             TextInput::make('slug')
                                 ->label('Slug')
                                 ->required()
