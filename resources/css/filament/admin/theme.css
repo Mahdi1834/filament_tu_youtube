@@ -8,7 +8,7 @@
     --color-main-secondary: #f5f6f9; /* Changed = to : */
 }
 
-.fi-sidebar {
+/* .fi-sidebar {
     @apply bg-main-primary;
 }
 
@@ -78,5 +78,5 @@
 
 .fi-section {
     @apply rounded-sm;
-}
+} */
 
