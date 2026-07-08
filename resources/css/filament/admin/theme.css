@@ -3,6 +3,8 @@
 @source '../../../../app/Filament/**/*';
 @source '../../../../resources/views/filament/**/*';
 
+@source '../../../../vendor/kenepa/translation-manager/resources/**/*.blade.php';
+
 @theme {
     --color-main-primary: #343a40; /* Changed = to : */
     --color-main-secondary: #f5f6f9; /* Changed = to : */
