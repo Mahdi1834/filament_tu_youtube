@@ -4,6 +4,7 @@ namespace App\Providers\Filament;
 
 use Filament\Auth\MultiFactor\App\AppAuthentication;
 use Filament\Auth\MultiFactor\Email\EmailAuthentication;
+use Filament\FontProviders\GoogleFontProvider;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -20,7 +21,6 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 
-
 class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
@@ -31,8 +31,11 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->login()
             ->colors([
-                'primary' => Color::Amber,
+                'primary' => Color::Blue,
             ])
+            // ->font('Roboto Mono', provider: GoogleFontProvider::class)
+            ->brandLogo(asset('images/logo-noiatech.svg'))
+            // ->favicon(asset("images/favicon.ico")) //for custom favicon, uncomment this line and add your favicon to public/images/favicon.ico
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')
             ->pages([
@@ -53,7 +56,7 @@ class AdminPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
-                "role:admin"
+                'role:admin',
             ])
             ->authMiddleware([
                 Authenticate::class,
@@ -63,6 +66,8 @@ class AdminPanelProvider extends PanelProvider
                 AppAuthentication::make(),
                 EmailAuthentication::make(),
             ])
-            ->databaseNotifications();
+            ->databaseNotifications()
+            ->viteTheme('resources/css/filament/admin/theme.css')
+            ->brandName("Admin Panel");
     }
 }
